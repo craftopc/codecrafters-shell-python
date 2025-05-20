@@ -1,4 +1,5 @@
 import sys
+import os
 
 
 def main():
@@ -15,6 +16,16 @@ def main():
         main_command = s[0]
         args = s[1:]
         builtin_command = ["exit", "echo", "type"]
+        # env path
+        path_command = {}
+        for each_path in PATH.split(":"):
+            for root, _, files in os.walk(each_path):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    if os.access(file_path, os.X_OK):
+                        if file in path_command:
+                            continue
+                        path_command[file] = file_path
 
         match main_command:
             case "exit":
@@ -38,6 +49,8 @@ def main():
                 if len(s) >= 2:
                     if args[0] in builtin_command:
                         print(f"{args[0]} is a shell builtin")
+                    elif args[0] in path_command:
+                        print(f"{args[0]} is {path_command[args[0]]}")
                     else:
                         print(f"{args[0]}: not found")
                 else:
@@ -48,4 +61,5 @@ def main():
 
 
 if __name__ == "__main__":
+    PATH = os.getenv("PATH", None)
     main()
