@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 
 
 def main():
@@ -55,9 +56,16 @@ def main():
                         print(f"{args[0]}: not found")
                 else:
                     print(f"need parameter")
-
             case _:
-                print(f"{main_command}: command not found")
+                # external_program
+                if main_command in path_command:
+                    exec_path = f"{path_command[main_command]}"
+                    if len(s) >= 2:
+                        subprocess.run([main_command, *args], executable=exec_path)
+                    else:
+                        subprocess.run([main_command], executable=exec_path)
+                else:
+                    print(f"{main_command}: command not found")
 
 
 if __name__ == "__main__":
