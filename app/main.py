@@ -26,6 +26,12 @@ def main():
                         sys.exit(n)
                 else:
                     print(f"need parameter")
+            case "echo":
+                if len(s) >= 2:
+                    s = ""
+                    for i in args:
+                        s += i + " "
+                    print(s.strip())
             case _:
                 print(f"{main_command}: command not found")
 
