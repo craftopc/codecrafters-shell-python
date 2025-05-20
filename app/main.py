@@ -7,25 +7,25 @@ def main():
         # Uncomment this block to pass the first stage
         sys.stdout.write("$ ")
         # Wait for user input
-        command = input()
+        command = input().strip()
 
         import re
 
-        s = command + " "
-        space_idx = [x.start() for x in re.finditer(r" ", s)]
-        main_command = s[: space_idx[0]]
+        s = re.sub(r"\s+", " ", command).split(" ")
+        main_command = s[0]
+        args = s[1:]
         match main_command:
             case "exit":
-                if len(space_idx) >= 2:
-                    parameter1 = s[space_idx[0] + 1 : space_idx[1]]
+                if len(s) >= 2:
+                    parameter1 = args[0]
                     try:
                         n = int(parameter1)
                     except:
                         print(f"illegal parameter: {parameter1}")
                     else:
-                        sys.exit(int(parameter1))
+                        sys.exit(n)
                 else:
-                    print(f"leak parameter")
+                    print(f"need parameter")
             case _:
                 print(f"{main_command}: command not found")
 
