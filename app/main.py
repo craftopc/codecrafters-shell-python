@@ -60,7 +60,9 @@ def main():
                 print(os.getcwd())
             case "cd":
                 if len(s) >= 2:
-                    if os.path.exists(f"{args[0]}"):
+                    if args[0] == "~":
+                        os.chdir(f"{HOME}")
+                    elif os.path.exists(f"{args[0]}"):
                         os.chdir(f"{args[0]}")
                     else:
                         print(f"{main_command}: {args[0]}: No such file or directory")
@@ -78,4 +80,5 @@ def main():
 
 if __name__ == "__main__":
     PATH = os.getenv("PATH", None)
+    HOME = os.getenv("HOME", None)
     main()
