@@ -12,31 +12,17 @@ def main():
         # Wait for user input
         command = input().strip()
 
-        import re
-
         s = shlex.split(command)
         main_command = s[0]
         args = s[1:]
-        builtin_command = ["exit", "echo", "type", "pwd", "cd"]
-        # env path
-        path_command = {}
-        for each_path in PATH.split(":"):
-            for root, _, files in os.walk(each_path):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    if os.access(file_path, os.X_OK):
-                        if file in path_command:
-                            continue
-                        path_command[file] = file_path
 
         match main_command:
             case "exit":
                 if len(s) >= 2:
-                    parameter1 = args[0]
                     try:
-                        n = int(parameter1)
+                        n = int(args[0])
                     except:
-                        print(f"illegal parameter: {parameter1}")
+                        print(f"illegal parameter: {args[0]}")
                     else:
                         sys.exit(n)
                 else:
@@ -61,7 +47,7 @@ def main():
                 print(os.getcwd())
             case "cd":
                 if len(s) >= 2:
-                    if args[0] == "~":
+                    if args[0] == "~" and HOME:
                         os.chdir(f"{HOME}")
                     elif os.path.exists(f"{args[0]}"):
                         os.chdir(f"{args[0]}")
@@ -82,4 +68,16 @@ def main():
 if __name__ == "__main__":
     PATH = os.getenv("PATH", None)
     HOME = os.getenv("HOME", None)
+    builtin_command = ["exit", "echo", "type", "pwd", "cd"]
+    # env path
+    path_command = {}
+    if PATH:
+        for each_path in PATH.split(":"):
+            for root, _, files in os.walk(each_path):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    if os.access(file_path, os.X_OK):
+                        if file in path_command:
+                            continue
+                        path_command[file] = file_path
     main()
