@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import shlex
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
 
         import re
 
-        s = re.sub(r"\s+", " ", command).split(" ")
+        s = shlex.split(command)
         main_command = s[0]
         args = s[1:]
         builtin_command = ["exit", "echo", "type", "pwd", "cd"]
