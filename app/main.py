@@ -16,7 +16,7 @@ def main():
         s = re.sub(r"\s+", " ", command).split(" ")
         main_command = s[0]
         args = s[1:]
-        builtin_command = ["exit", "echo", "type"]
+        builtin_command = ["exit", "echo", "type", "pwd"]
         # env path
         path_command = {}
         for each_path in PATH.split(":"):
@@ -56,6 +56,8 @@ def main():
                         print(f"{args[0]}: not found")
                 else:
                     print(f"need parameter")
+            case "pwd":
+                print(os.getcwd())
             case _:
                 # external_program
                 if main_command in path_command:
